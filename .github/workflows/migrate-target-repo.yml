@@ -33,7 +33,27 @@ jobs:
         with:
           java-version: '25'
           distribution: 'temurin'
-          cache: 'maven'
+          cache: 'maven' 
+       
+      # 1. Checkout the Parent Repository (Side-by-side with your app)
+      - name: Checkout Parent POM Repo
+        uses: actions/checkout@v4
+        with:
+          repository: Siri1990/spring-boot-mongodb-parent
+          ref: migration-2.0.0
+          path: spring-boot-mongodb-parent
+
+      # 2. Install the Parent POM
+      - name: Install Parent POM
+        run: |
+          cd spring-boot-mongodb-parent
+          mvn install -N  # -N means non-recursive (just the parent pom), which is faster
+
+      # 3. Now build your main application
+      - name: Build Application
+        run: |
+          cd generic-springboot-migration/target-app
+          mvn clean install
 
       # ── STEP 1: Update Parent Reference ────────────────────────────────
       - name: "📦 Update Custom Parent Library"
