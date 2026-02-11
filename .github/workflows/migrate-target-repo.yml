@@ -59,7 +59,7 @@ jobs:
 
       # ── STEP 2: OpenRewrite (AST Transformation) ─────────────────────
       - name: Run OpenRewrite
-        working-directory: target-app
+        #working-directory: target-app
         run: |
           mvn -U org.openrewrite.maven:rewrite-maven-plugin:run \
             -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-spring:LATEST \
