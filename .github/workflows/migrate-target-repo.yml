@@ -49,12 +49,6 @@ jobs:
           cd spring-boot-mongodb-parent
           mvn install -N  # -N means non-recursive (just the parent pom), which is faster
 
-      # 3. Now build your main application
-      - name: Build Application
-        run: |
-          cd generic-springboot-migration/target-app
-          mvn clean install
-
       # ── STEP 1: Update Parent Reference ────────────────────────────────
       - name: "📦 Update Custom Parent Library"
         working-directory: target-app
