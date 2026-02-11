@@ -34,6 +34,36 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
+          
+      - name: "Configure Maven Settings for Snapshots"
+        working-directory: target-app
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <profiles>
+              <profile>
+                <id>snapshots</id>
+                <repositories>
+                  <repository>
+                    <id>snapshots</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                    <releases>
+                      <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                      <enabled>true</enabled>
+                    </snapshots>
+                  </repository>
+                </repositories>
+              </profile>
+            </profiles>
+            <activeProfiles>
+              <activeProfile>snapshots</activeProfile>
+            </activeProfiles>
+          </settings>
+          EOF
+          echo "✅ Maven settings configured for snapshot repository"
 
       # ── STEP 1: Update Parent Reference ────────────────────────────────
       - name: "📦 Update Custom Parent Library"
