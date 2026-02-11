@@ -9,7 +9,7 @@ on:
       parent_version:
         description: "New version of the Parent Library"
         required: true
-        default: "2.2.0-SNAPSHOT"
+        default: "2.0.0-SNAPSHOT"
 
 jobs:
   migrate:
@@ -34,44 +34,14 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
-          
-      - name: "Configure Maven Settings for Snapshots"
-        working-directory: target-app
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml << 'EOF'
-          <settings>
-            <profiles>
-              <profile>
-                <id>snapshots</id>
-                <repositories>
-                  <repository>
-                    <id>snapshots</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                    <releases>
-                      <enabled>false</enabled>
-                    </releases>
-                    <snapshots>
-                      <enabled>true</enabled>
-                    </snapshots>
-                  </repository>
-                </repositories>
-              </profile>
-            </profiles>
-            <activeProfiles>
-              <activeProfile>snapshots</activeProfile>
-            </activeProfiles>
-          </settings>
-          EOF
-          echo "✅ Maven settings configured for snapshot repository"
 
       # ── STEP 1: Update Parent Reference ────────────────────────────────
       - name: "📦 Update Custom Parent Library"
         working-directory: target-app
         run: |
-          # Updates 1.0.0 to 2.2.0-SNAPSHOT for your specific parent artifact
-          perl -i -0pe "s|(<artifactId>spring-boot-mongodb-parent</artifactId>\s*<version>).*?(</version>)|\${1}2.2.0-SNAPSHOT\${2}|g" pom.xml
-          echo "✅ Parent version forced to 2.2.0-SNAPSHOT"
+          # Updates 1.0.0 to 2.0.0-SNAPSHOT for your specific parent artifact
+          perl -i -0pe "s|(<artifactId>spring-boot-mongodb-parent</artifactId>\s*<version>).*?(</version>)|\${1}2.0.0-SNAPSHOT\${2}|g" pom.xml
+          echo "✅ Parent version forced to 2.0.0-SNAPSHOT"
 
       # ── STEP 2: OpenRewrite (AST Transformation) ─────────────────────
       - name: Run OpenRewrite
